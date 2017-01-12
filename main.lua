@@ -1,6 +1,7 @@
 memory = {{},{},{}}
 readmemory = {{},{},{}}
 pointer = {1,1,1}
+readpointer = {1,1,1}
 instring = {false,false,false}
 ignext = {false,false,false}
 builtstring = {"","",""}
@@ -64,6 +65,7 @@ ip = 1
 
 while ip <= #stream1 do
 	readmemory = {{},{},{}}
+	readpointer = {pointer[1],pointer[2],pointer[3]}
 	for k,v in pairs(memory) do
 		for k2,v2 in pairs(v) do
 			readmemory[k][k2] = v2
@@ -95,12 +97,4 @@ while ip <= #stream1 do
 	end
 
 	ip = ip + 1
-end
-
-io.stderr:write("\n")
-for k,v in pairs(memory) do
-	for k2, v2 in pairs(v) do
-		io.stderr:write(v2, ", ")
-	end
-	io.stderr:write("\n")
 end

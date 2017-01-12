@@ -25,8 +25,8 @@ end
 
 -- #MATH
 funcs['+'] = function(this,left,right)
-	local l = (readmemory[left][pointer[left]] or 0)
-	local r = (readmemory[right][pointer[right]] or 0)
+	local l = (readmemory[left][readpointer[left]] or 0)
+	local r = (readmemory[right][readpointer[right]] or 0)
 	if(type(l)=='string'and type(r)=='string')then
 		memory[this][pointer[this]] = l..r
 	else
@@ -34,11 +34,11 @@ funcs['+'] = function(this,left,right)
 	end
 end
 funcs['-'] = function(this,left,right)
-	memory[this][pointer[this]] = (readmemory[left][pointer[left]] or 0)-(readmemory[right][pointer[right]] or 0)
+	memory[this][pointer[this]] = (readmemory[left][readpointer[left]] or 0)-(readmemory[right][readpointer[right]] or 0)
 end
 funcs['*'] = function(this,left,right)
-	local l = (readmemory[left][pointer[left]] or 0)
-	local r = (readmemory[right][pointer[right]] or 0)
+	local l = (readmemory[left][readpointer[left]] or 0)
+	local r = (readmemory[right][readpointer[right]] or 0)
 	if(type(l)=='string'and type(r)=='number')then
 		memory[this][pointer[this]] = l:rep(r)
 	elseif(type(r)=='string'and type(l)=='number')then
@@ -48,10 +48,10 @@ funcs['*'] = function(this,left,right)
 	end
 end
 funcs['/'] = function(this,left,right)
-	memory[this][pointer[this]] = (readmemory[left][pointer[left]] or 0)/(readmemory[right][pointer[right]] or 0)
+	memory[this][pointer[this]] = (readmemory[left][readpointer[left]] or 0)/(readmemory[right][readpointer[right]] or 0)
 end
 funcs['^'] = function(this,left,right)
-	memory[this][pointer[this]] = (readmemory[left][pointer[left]] or 0)^(readmemory[right][pointer[right]] or 0)
+	memory[this][pointer[this]] = (readmemory[left][readpointer[left]] or 0)^(readmemory[right][readpointer[right]] or 0)
 end
 funcs['_'] = function(this)
 	memory[this][pointer[this]] = 0
@@ -59,10 +59,10 @@ end
 
 -- Grab the value from the other two buffers.
 funcs['r'] = function(this,left,right)
-	memory[this][pointer[this]] = readmemory[right][pointer[right]]
+	memory[this][pointer[this]] = readmemory[right][readpointer[right]]
 end
 funcs['l'] = function(this,left,right)
-	memory[this][pointer[this]] = readmemory[left][pointer[left]]
+	memory[this][pointer[this]] = readmemory[left][readpointer[left]]
 end
 
 -- Convert between string and number.
@@ -150,15 +150,16 @@ funcs['R'] = function(this)
 end
 funcs['I'] = function(this) --Read a number from StdIn (I for 'input' or 'integer')
 	memory[this][pointer[this]] = (io.read("*n") or 0)
+end
 
+funcs['B'] = function(this)
+	memory[this][pointer[this]] = string.byte(io.read(1) or "\0")
+end
 
 funcs['D'] = function()
 	io.stderr:write("\n")
 	for k,v in pairs(memory) do
-		for k2, v2 in pairs(v) do
-			io.stderr:write(v2, ", ")
-		end
-		io.stderr:write("\n")
+		io.stderr:write(v[readpointer[k]],"\n")
 	end
 end
 
