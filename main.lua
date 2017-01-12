@@ -4,12 +4,15 @@ pointer = {1,1,1}
 instring = {false,false,false}
 ignext = {false,false,false}
 builtstring = {"","",""}
-require"stringmath"
-require"functions"
+function require(lib)
+	local dir = arg[0]:gsub("main.lua$","")
+	loadfile(dir..lib)()
+end
+require"stringmath.lua"
+require"functions.lua"
 local code = ""
-
 do
-	local f = io.open('code.trd')
+	local f = io.open(arg[1] or 'code.trd','r')
 	code=f:read("*a")
 	f:close()
 end
@@ -90,7 +93,7 @@ while ip <= #stream1 do
 		elseif funcs[v] then local b, e = pcall(funcs[v],i,l,r)
 			if not b then error("Error at point "..ip..". "..e.."\n"..(" "):rep(math.min(6,ip)-1).."V\n"..stream1:sub(math.max(ip-5,0),math.min(ip+5,#stream1)).."\n"..stream2:sub(math.max(ip-5,0),math.min(ip+5,#stream2)).."\n"..stream3:sub(math.max(ip-5,0),math.min(ip+5,#stream3))) end end
 	end
-	
+
 	ip = ip + 1
 end
 
