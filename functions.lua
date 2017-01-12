@@ -84,24 +84,20 @@ funcs['b'] = function(this)
 	local b,out = pcall(string.byte, readmemory[this][pointer[this]])
 	if b then
 		memory[this][pointer[this]] = out
-	end
-end
+i	endend
 
 -- Temporary Buffers
-funcs['i'] = function(this)
-	local t = {}
-	for k, v in pairs(memory[this]) do
+funcs['i'] = function(this)	local t = {}
+-	for k, v in pairs(memory[this]) do
 		if k < pointer[this] then
 			t[k] = v
 		else
 			t[k+1] = v
-		end
-	end
+		end	end
 	memory[this] = t
 end
-funcs['d'] = function(this)
-	local t = {}
-	for k,v in pairs(memory[this]) do
+funcs['d'] = function(this)	local t = {}
+-	for k,v in pairs(memory[this]) do
 		if k < pointer[this] then
 			t[k] = v
 		elseif k ~= pointer[this] then
@@ -111,8 +107,7 @@ funcs['d'] = function(this)
 	memory[this]=t
 end
 
--- Instruction Pointer Control! :D
-LoopStack = {}
+ -- Instruction Pointer Control! :DLoopStack = {}
 funcs['['] = function(this)
 	if (readmemory[this][pointer[this]] or 0) == 0 then
 		local d = 0
@@ -145,9 +140,11 @@ end
 funcs['o'] = function(this)
 	io.write(readmemory[this][pointer[this]] or 0)
 end
---[[funcs['r'] = function(this)
-
-end]]
+funcs['R'] = function(this)
+	memory[this][pointer[this]] = (io.read() or "") --Read a line from StdIn
+end
+funcs['I'] = function(this) --Read a number from StdIn (I for 'input' or 'integer')
+	memory[this][pointer[this]] = (io.read("*n") or 0)
 
 
 funcs['D'] = function()
