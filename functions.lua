@@ -111,7 +111,7 @@ funcs['d'] = function(this)
 	memory[this]=t
 end
 
--- Instruction Pointer Control! :D
+ -- Instruction Pointer Control! :D
 LoopStack = {}
 funcs['['] = function(this)
 	if (readmemory[this][pointer[this]] or 0) == 0 then
@@ -145,9 +145,11 @@ end
 funcs['o'] = function(this)
 	io.write(readmemory[this][pointer[this]] or 0)
 end
---[[funcs['r'] = function(this)
-
-end]]
+funcs['R'] = function(this)
+	memory[this][pointer[this]] = (io.read() or "") --Read a line from StdIn
+end
+funcs['I'] = function(this) --Read a number from StdIn (I for 'input' or 'integer')
+	memory[this][pointer[this]] = (io.read("*n") or 0)
 
 
 funcs['D'] = function()
