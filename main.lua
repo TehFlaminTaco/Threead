@@ -97,10 +97,10 @@ while ip <= #stream1 do
 	ip = ip + 1
 end
 
-print()
+io.stderr:write("\n")
 for k,v in pairs(memory) do
 	for k2, v2 in pairs(v) do
-		io.write(v2, ", ")
+		io.stderr:write(v2, ", ")
 	end
-	print()
+	io.stderr:write("\n")
 end
