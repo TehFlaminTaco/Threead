@@ -149,4 +149,15 @@ end
 
 end]]
 
+
+funcs['D'] = function()
+	io.stderr:write("\n")
+	for k,v in pairs(memory) do
+		for k2, v2 in pairs(v) do
+			io.stderr:write(v2, ", ")
+		end
+		io.stderr:write("\n")
+	end
+end
+
 return funcs

@@ -12,8 +12,18 @@ str.__mul = function(a,b)
 end
 str.__pow = function(a,b)
 	if (type(a)=='string' and type(b)=='number')then
-		return a:sub(b,b)
+		local s = a:sub(b,b)
+		if #s == 0 then
+			return nil
+		else
+			return s
+		end
 	elseif type(b)=='string' and type(a)=='number' then
-		return b:sub(a,a)
+		local s = b:sub(a,a)
+		if #s == 0 then
+			return nil
+		else
+			return s
+		end
 	end
 end
