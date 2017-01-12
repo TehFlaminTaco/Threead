@@ -111,7 +111,7 @@ funcs['d'] = function(this)
 	memory[this]=t
 end
 
- -- Instruction Pointer Control! :D
+-- Instruction Pointer Control! :D
 LoopStack = {}
 funcs['['] = function(this)
 	if (readmemory[this][pointer[this]] or 0) == 0 then
