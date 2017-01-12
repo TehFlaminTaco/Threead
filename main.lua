@@ -1,6 +1,9 @@
 memory = {{},{},{}}
 readmemory = {{},{},{}}
 pointer = {1,1,1}
+instring = {false,false,false}
+ignext = {false,false,false}
+builtstring = {"","",""}
 require"stringmath"
 require"functions"
 local code = ""
@@ -68,12 +71,48 @@ while ip <= #stream1 do
 	local b = stream2:sub(ip,ip)
 	local c = stream3:sub(ip,ip)
 
-	if funcs[a] then local b, e = pcall(funcs[a],1,3,2)
-				     if not b then error("Error at point "..ip..". "..e.."\n"..(" "):rep(math.min(6,ip)-1).."V\n"..stream1:sub(math.max(ip-5,0),math.min(ip+5,#stream1)).."\n"..stream2:sub(math.max(ip-5,0),math.min(ip+5,#stream2)).."\n"..stream3:sub(math.max(ip-5,0),math.min(ip+5,#stream3))) end end
-	if funcs[b] then local b, e = pcall(funcs[b],2,1,3)
-					 if not b then error("Error at point "..ip..". "..e.."\n"..(" "):rep(math.min(6,ip)-1).."V\n"..stream1:sub(math.max(ip-5,0),math.min(ip+5,#stream1)).."\n"..stream2:sub(math.max(ip-5,0),math.min(ip+5,#stream2)).."\n"..stream3:sub(math.max(ip-5,0),math.min(ip+5,#stream3))) end end
-	if funcs[c] then local b, e = pcall(funcs[c],3,2,1)
-					 if not b then error("Error at point "..ip..". "..e.."\n"..(" "):rep(math.min(6,ip)-1).."V\n"..stream1:sub(math.max(ip-5,0),math.min(ip+5,#stream1)).."\n"..stream2:sub(math.max(ip-5,0),math.min(ip+5,#stream2)).."\n"..stream3:sub(math.max(ip-5,0),math.min(ip+5,#stream3))) end end
+	if(instring[1])then
+		if ignext[1] then
+			builtstring[1] = builtstring[1]..a
+		else
+			if a == "\\" then
+				ignext = true
+			elseif a == '"' then
+				funcs[a](1,3,2)
+			else
+				builtstring[1] = builtstring[1]..a
+			end
+		end
+	elseif funcs[a] then local b, e = pcall(funcs[a],1,3,2)
+		if not b then error("Error at point "..ip..". "..e.."\n"..(" "):rep(math.min(6,ip)-1).."V\n"..stream1:sub(math.max(ip-5,0),math.min(ip+5,#stream1)).."\n"..stream2:sub(math.max(ip-5,0),math.min(ip+5,#stream2)).."\n"..stream3:sub(math.max(ip-5,0),math.min(ip+5,#stream3))) end end
+	if(instring[2])then
+		if ignext[2] then
+			builtstring[2] = builtstring[2]..b
+		else
+			if b == "\\" then
+				ignext = true
+			elseif b == '"' then
+				funcs[b](2,1,3)
+			else
+				builtstring[2] = builtstring[2]..b
+			end
+		end
+	elseif funcs[b] then local b, e = pcall(funcs[b],2,1,3)
+		if not b then error("Error at point "..ip..". "..e.."\n"..(" "):rep(math.min(6,ip)-1).."V\n"..stream1:sub(math.max(ip-5,0),math.min(ip+5,#stream1)).."\n"..stream2:sub(math.max(ip-5,0),math.min(ip+5,#stream2)).."\n"..stream3:sub(math.max(ip-5,0),math.min(ip+5,#stream3))) end end
+	if(instring[3])then
+		if ignext[3] then
+			builtstring[3] = builtstring[3]..c
+		else
+			if c == "\\" then
+				ignext = true
+			elseif c == '"' then
+				funcs[c](3,2,1)
+			else
+				builtstring[3] = builtstring[3]..c
+			end
+		end
+	elseif funcs[c] then local b, e = pcall(funcs[c],3,2,1)
+		if not b then error("Error at point "..ip..". "..e.."\n"..(" "):rep(math.min(6,ip)-1).."V\n"..stream1:sub(math.max(ip-5,0),math.min(ip+5,#stream1)).."\n"..stream2:sub(math.max(ip-5,0),math.min(ip+5,#stream2)).."\n"..stream3:sub(math.max(ip-5,0),math.min(ip+5,#stream3))) end end
 
 	ip = ip + 1
 end

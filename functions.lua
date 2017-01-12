@@ -7,6 +7,14 @@ for i=0, 9 do
 	end
 end
 
+funcs['"'] = function(this)
+	instring[this]=not instring[this]
+	if not instring[this] then
+		memory[this][pointer[this]] = builtstring[this]
+		builtstring[this] = ""
+	end
+end
+
 -- Pointer movement
 funcs['>'] = function(this)
 	pointer[this] = pointer[this]+1
