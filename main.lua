@@ -7,7 +7,9 @@ ignext = {false,false,false}
 builtstring = {"","",""}
 function require(lib)
 	local dir = arg[0]:gsub("main.lua$","")
-	loadfile(dir..lib)()
+	local f, e = loadfile(dir..lib)
+	if not f then error(e) end
+	return f()
 end
 require"stringmath.lua"
 require"functions.lua"
@@ -75,6 +77,7 @@ while ip <= #stream1 do
 	local a = stream1:sub(ip,ip)
 	local b = stream2:sub(ip,ip)
 	local c = stream3:sub(ip,ip)
+	local terminate = false
 
 	for i=1, 3 do
 		local v = ({a,b,c})[i]
@@ -93,9 +96,15 @@ while ip <= #stream1 do
 					builtstring[i] = builtstring[i]..v
 				end
 			end
-		elseif funcs[v] then local b, e = pcall(funcs[v],i,l,r)
-			if not b then error("Error at point "..ip..". "..e.."\n"..(" "):rep(math.min(6,ip)-1).."V\n"..stream1:sub(math.max(ip-5,0),math.min(ip+5,#stream1)).."\n"..stream2:sub(math.max(ip-5,0),math.min(ip+5,#stream2)).."\n"..stream3:sub(math.max(ip-5,0),math.min(ip+5,#stream3))) end end
+		elseif funcs[v] then
+			local b, e = pcall(funcs[v],i,l,r)
+			if not b then
+				error("Error at point "..ip..". "..e.."\n"..(" "):rep(math.min(6,ip)-1).."V\n"..stream1:sub(math.max(ip-5,0),math.min(ip+5,#stream1)).."\n"..stream2:sub(math.max(ip-5,0),math.min(ip+5,#stream2)).."\n"..stream3:sub(math.max(ip-5,0),math.min(ip+5,#stream3)))
+			elseif e then
+				terminate = true
+			end
+		end
 	end
-
+	if terminate then break end
 	ip = ip + 1
 end

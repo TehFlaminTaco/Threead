@@ -79,6 +79,6 @@ All functions that take two arguments do so as (LeftBuffer, RightBuffer). All ot
  - B: Read a byte from STDIN to the current buffer.
  - ~ gives bitwise not
  - = gives 1 if l==r, 0 otherwise
- - H gives first L chars of R
- - T gives last L chars of R
+ - H gives first R chars of L
+ - T gives last R chars of L
  - @ terminates execution

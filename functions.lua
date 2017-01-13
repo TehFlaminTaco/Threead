@@ -59,35 +59,30 @@ end
 funcs['_'] = function(this)
 	memory[this][pointer[this]] = 0
 end
+
 funcs['~'] = function(this)
 	memory[this][pointer[this]] = bit.bnot(readmemory[this][pointer[this]]) --bitwise not
 end
+
 funcs['='] = function(this,left,right) --Are l and r equal?
 	local l = (readmemory[left][readpointer[left]] or 0)
 	local r = (readmemory[right][readpointer[right]] or 0)
-	if(type(l)==type(r))then
-		if(l==r)then
-			memory[this][pointer[this]] = 1
-		end
-	end
-	else
-		memory[this][pointer[this]] = 0
-	end
+	memory[this][pointer[this]] = l==r and 1 or 0
 end
 
 --String operations
-funcs['H'](this,left,right) --Head, first l chars of r
+funcs['H'] = function(this,left,right) --Head, first r chars of l
 	local l = (readmemory[left][readpointer[left]] or 0)
 	local r = (readmemory[right][readpointer[right]] or 0)
-	if(type(l)=='number'and type(r)=='string')then
-		memory[this][pointer[this]] = strsub (r,1,l)
+	if(type(r)=='number'and type(l)=='string')then
+		memory[this][pointer[this]] = l:sub(1,r)
 	end
 end
-funcs['T'](this,left,right) --Tail, last l chars of r
+funcs['T'] = function(this,left,right) --Tail, last r chars of l
 	local l = (readmemory[left][readpointer[left]] or 0)
 	local r = (readmemory[right][readpointer[right]] or 0)
-	if(type(l)=='number'and type(r)=='string')then
-		memory[this][pointer[this]] = strsub (r,strlen(r)-l)
+	if(type(r)=='number'and type(l)=='string')then
+		memory[this][pointer[this]] = l:sub(-r)
 	end
 end
 
@@ -198,7 +193,7 @@ funcs['D'] = function()
 end
 
 funcs['@'] = function() --exits
-	os.exit() --Should be changed to an implementation that wait for all output to happen first
+	return true
 end
 
 return funcs
