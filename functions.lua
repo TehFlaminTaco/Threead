@@ -44,7 +44,7 @@ funcs['*'] = function(this,left,right)
 	elseif(type(r)=='string'and type(l)=='number')then
 		memory[this][pointer[this]] = r:rep(l)
 	else
-		memory[this][pointer[this]] = l+r
+		memory[this][pointer[this]] = l*r --used to be a +, here, I think it's a bug.
 	end
 end
 funcs['/'] = function(this,left,right)
@@ -58,6 +58,37 @@ funcs['%'] = function(this)
 end
 funcs['_'] = function(this)
 	memory[this][pointer[this]] = 0
+end
+funcs['~'] = function(this)
+	memory[this][pointer[this]] = bit.bnot(readmemory[this][pointer[this]]) --bitwise not
+end
+funcs['='] = function(this,left,right) --Are l and r equal?
+	local l = (readmemory[left][readpointer[left]] or 0)
+	local r = (readmemory[right][readpointer[right]] or 0)
+	if(type(l)==type(r))then
+		if(l==r)then
+			memory[this][pointer[this]] = 1
+		end
+	end
+	else
+		memory[this][pointer[this]] = 0
+	end
+end
+
+--String operations
+funcs['H'](this,left,right) --Head, first l chars of r
+	local l = (readmemory[left][readpointer[left]] or 0)
+	local r = (readmemory[right][readpointer[right]] or 0)
+	if(type(l)=='number'and type(r)=='string')then
+		memory[this][pointer[this]] = strsub (r,1,l)
+	end
+end
+funcs['T'](this,left,right) --Tail, last l chars of r
+	local l = (readmemory[left][readpointer[left]] or 0)
+	local r = (readmemory[right][readpointer[right]] or 0)
+	if(type(l)=='number'and type(r)=='string')then
+		memory[this][pointer[this]] = strsub (r,strlen(r)-l)
+	end
 end
 
 -- Grab the value from the other two buffers.
@@ -164,6 +195,10 @@ funcs['D'] = function()
 	for k,v in pairs(memory) do
 		io.stderr:write(v[readpointer[k] or 0] or "","\n")
 	end
+end
+
+funcs['@'] = function() --exits
+	os.exit() --Should be changed to an implementation that wait for all output to happen first
 end
 
 return funcs
