@@ -44,7 +44,7 @@ funcs['*'] = function(this,left,right)
 	elseif(type(r)=='string'and type(l)=='number')then
 		memory[this][pointer[this]] = r:rep(l)
 	else
-		memory[this][pointer[this]] = l*r --used to be a +, here, I think it's a bug.
+		memory[this][pointer[this]] = l*r
 	end
 end
 funcs['/'] = function(this,left,right)
