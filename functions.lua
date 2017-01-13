@@ -53,6 +53,9 @@ end
 funcs['^'] = function(this,left,right)
 	memory[this][pointer[this]] = (readmemory[left][readpointer[left]] or 0)^(readmemory[right][readpointer[right]] or 0)
 end
+funcs['%'] = function(this)
+	memory[this][pointer[this]] = (readmemory[left][readpointer[left]] or 0)%(readmemory[right][readpointer[right]] or 0)
+end
 funcs['_'] = function(this)
 	memory[this][pointer[this]] = 0
 end
@@ -159,7 +162,7 @@ end
 funcs['D'] = function()
 	io.stderr:write("\n")
 	for k,v in pairs(memory) do
-		io.stderr:write(v[readpointer[k]],"\n")
+		io.stderr:write(v[readpointer[k] or 0] or "","\n")
 	end
 end
 

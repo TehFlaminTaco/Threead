@@ -83,9 +83,10 @@ while ip <= #stream1 do
 		if(instring[i])then
 			if ignext[i] then
 				builtstring[i] = builtstring[i]..v
+				ignext[i] = false
 			else
 				if v == "\\" then
-					ignext = true
+					ignext[i] = true
 				elseif v == '"' then
 					funcs[v](i,l,r)
 				else

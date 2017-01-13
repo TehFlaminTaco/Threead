@@ -59,6 +59,7 @@ All functions that take two arguments do so as (LeftBuffer, RightBuffer). All ot
  - *: Multiplies two numbers, or repeats a string n times.
  - /: Divides two numbers.
  - ^: Raises a number to another number. Alternatively, gets the character at a particular position of a string.
+ - %: Get the modulus of a number to another number.
  - _: Sets the value of the current buffer to 0.
  - >: Cycles the memory tape to the left.
  - <: Cycles the memory tape to the right.
